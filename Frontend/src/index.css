@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'merriweather';
+    src: url("../public/fonts/Merriweather_24pt-Bold.ttf")
+   
+  }
+@import "tailwindcss";
+
+@theme{
+    --font-merriweather:merriweather,"sans-serif"
+}
