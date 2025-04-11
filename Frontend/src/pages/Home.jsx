@@ -6,10 +6,13 @@ import AddNote from "./AddNote";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import userContext from "../../Context/authContext";
+import EditNote from "./EditNote";
 
 const Home = () => {
   const {user} = useContext(userContext);
+  console.log("user",user)
   const [showAddNote, setShowAddNote] = useState(false);
+  const [showEditNote, setShowEditNote] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const [notes, setNotes] = useState([]);
@@ -50,8 +53,11 @@ const Home = () => {
     alert(response.data.message);
   };
 
-  const closemodel = () => {
+  const closeAddmodel = () => {
     return setShowAddNote(false);
+  };
+  const closeEditmodel = () => {
+    return setShowEditNote(false);
   };
   return (
     <>
@@ -64,7 +70,6 @@ const Home = () => {
           >
             <FaPlus />
             Add Notes
-            {user.name}
           </button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-5 gap-6">
@@ -78,7 +83,7 @@ const Home = () => {
                   {note.title}
                 </h1>
                 <div className="flex item-center gap-2">
-                  <MdEdit className="text-gray-600 text-2xl" />
+                  <MdEdit onClick={()=>setShowEditNote(true)} className="text-gray-600 cursor-pointer text-2xl" />
                   <MdDelete
                     onClick={() => handleDelete(note._id)}
                     className="text-red-600 cursor-pointer text-2xl"
@@ -89,7 +94,8 @@ const Home = () => {
             </div>
           ))}
         </div>
-        {showAddNote && <AddNote closemodel={closemodel} />}
+        {showAddNote && <AddNote closemodel={closeAddmodel} />}
+        {showEditNote && <EditNote closemodel={closeEditmodel} />}
       </div>
     </>
   );

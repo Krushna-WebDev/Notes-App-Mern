@@ -2,7 +2,7 @@ const notemodel = require("../models/noteModel");
 
 const getnote = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const notes = await notemodel.find({ userId });
 
     console.log("notes", notes);
@@ -17,7 +17,8 @@ const getnote = async (req, res) => {
 
 const addnote = async (req, res) => {
   try {
-    const userId = req.user.id;
+    console.log(req.user)
+    const userId = req.user.userId;
 
     const { title, content, category } = req.body;
     console.log("backend",title, content, category,userId)

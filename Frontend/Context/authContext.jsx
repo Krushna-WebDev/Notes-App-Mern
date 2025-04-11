@@ -23,8 +23,8 @@ export const UserProvider = ({ children }) => {
       );
       setUser(response.data.user);
     };
-    fetchuser()
-  }, []);
+    fetchuser();
+  },[]);
   return (
     <userContext.Provider value={{ user }}>{children}</userContext.Provider>
   );

@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { IoSearchSharp } from "react-icons/io5";
+import userContext from "../../Context/authContext";
 
 const Navbar = ({ setSearchQuery }) => {
-  
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+  };
+  const { user } = useContext(userContext);
   return (
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-4 md:px-6">
@@ -29,12 +33,21 @@ const Navbar = ({ setSearchQuery }) => {
           </button>
         </div>
 
-        <Link
-          to="/login"
-          className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition focus:ring-2 focus:ring-blue-400 focus:outline-none"
-        >
-          Get Started
-        </Link>
+        {user ? (
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 hover:bg-red-600 cursor-pointer py-2 px-3 rounded-xl text-white font-bold "
+          >
+            Logout
+          </button>
+        ) : (
+          <Link
+            to="/login"
+            className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          >
+            Get Started
+          </Link>
+        )}
       </div>
     </nav>
   );

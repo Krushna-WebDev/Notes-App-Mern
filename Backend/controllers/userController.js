@@ -42,12 +42,12 @@ const register = async (req, res) => {
     email,
     password: hashedpassword,
   });
-  const token = jwt.sign({ id: createduser._id }, "shhhh");
+  const token = jwt.sign({ userId: createduser._id }, "shhhh");
   res.status(201).json({ message: "register Successfull", token: token });
 };
 
 const user = async (req, res) => {
-  const userId = req.user.id;
+  const userId = req.user.userId;
 
   const user = await userModel.findById(userId);
 

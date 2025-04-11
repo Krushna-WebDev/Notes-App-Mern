@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 
 const AddNote = ({ closemodel }) => {
