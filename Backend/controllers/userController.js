@@ -46,4 +46,16 @@ const register = async (req, res) => {
   res.status(201).json({ message: "register Successfull", token: token });
 };
 
-module.exports = { login, register };
+const user = async (req, res) => {
+  const userId = req.user.id;
+
+  const user = await userModel.findById(userId);
+
+  if (!user) {
+    return res.json({ message: "user not found" });
+  }
+
+  res.status(200).json({ user });
+};
+
+module.exports = { login, register, user };

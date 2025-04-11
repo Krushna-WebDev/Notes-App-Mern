@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FaPlus } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import AddNote from "./AddNote";
 import axios from "axios";
 import Navbar from "../components/Navbar";
+import userContext from "../../Context/authContext";
 
 const Home = () => {
+  const {user} = useContext(userContext);
   const [showAddNote, setShowAddNote] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   const [notes, setNotes] = useState([]);
-  const filteredNotes = notes.filter((note) =>
-    note.title.toLowerCase().includes(searchQuery) ||
-    note.content.toLowerCase().includes(searchQuery)
+  const filteredNotes = notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(searchQuery) ||
+      note.content.toLowerCase().includes(searchQuery)
   );
 
   useEffect(() => {
@@ -52,7 +55,7 @@ const Home = () => {
   };
   return (
     <>
-      <Navbar setSearchQuery={setSearchQuery}  />
+      <Navbar setSearchQuery={setSearchQuery} />
       <div className="h-screen  mx-auto max-w-7xl px-4">
         <div className="flex mt-10 justify-end">
           <button
@@ -61,6 +64,7 @@ const Home = () => {
           >
             <FaPlus />
             Add Notes
+            {user.name}
           </button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-5 gap-6">
