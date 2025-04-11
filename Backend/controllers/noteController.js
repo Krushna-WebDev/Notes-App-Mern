@@ -17,11 +17,11 @@ const getnote = async (req, res) => {
 
 const addnote = async (req, res) => {
   try {
-    console.log(req.user)
+    console.log(req.user);
     const userId = req.user.userId;
 
     const { title, content, category } = req.body;
-    console.log("backend",title, content, category,userId)
+    console.log("backend", title, content, category, userId);
     if (!title || !content || !category) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -49,9 +49,23 @@ const deletenotes = async (req, res) => {
     res.status(500).json({ message: "Error Deleting Note", error });
   }
 };
-const updatenote = (req, res) => {
-  // const { title, content, category } = req.body;
+const updatenote = async (req, res) => {
+  try {
+    const { title, content, category } = req.body;
+    const id = req.params.id;
+
+    const updatedNote = await notemodel.findByIdAndUpdate(
+      id,
+      { title, content, category },
+      { new: true }
+    );
+
+    res.status(200).json({ message: "Note updated successfully", updatedNote });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating note", error });
+  }
 };
+
 
 module.exports = {
   addnote,

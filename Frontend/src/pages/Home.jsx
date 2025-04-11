@@ -9,10 +9,11 @@ import userContext from "../../Context/authContext";
 import EditNote from "./EditNote";
 
 const Home = () => {
-  const {user} = useContext(userContext);
-  console.log("user",user)
+  const { user } = useContext(userContext);
+  console.log("user", user);
   const [showAddNote, setShowAddNote] = useState(false);
   const [showEditNote, setShowEditNote] = useState(false);
+  const [selectedNote, setSelectedNote] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const [notes, setNotes] = useState([]);
@@ -52,6 +53,10 @@ const Home = () => {
     );
     alert(response.data.message);
   };
+  const handleEdit = (note) => {
+    setSelectedNote(note); // Set the selected note
+    setShowEditNote(true); // Open the edit modal
+  };
 
   const closeAddmodel = () => {
     return setShowAddNote(false);
@@ -83,7 +88,10 @@ const Home = () => {
                   {note.title}
                 </h1>
                 <div className="flex item-center gap-2">
-                  <MdEdit onClick={()=>setShowEditNote(true)} className="text-gray-600 cursor-pointer text-2xl" />
+                  <MdEdit
+                    onClick={() => handleEdit(note)}
+                    className="text-gray-600 cursor-pointer text-2xl"
+                  />
                   <MdDelete
                     onClick={() => handleDelete(note._id)}
                     className="text-red-600 cursor-pointer text-2xl"
@@ -95,7 +103,7 @@ const Home = () => {
           ))}
         </div>
         {showAddNote && <AddNote closemodel={closeAddmodel} />}
-        {showEditNote && <EditNote closemodel={closeEditmodel} />}
+        {showEditNote && <EditNote closemodel={closeEditmodel} note={selectedNote}/>}
       </div>
     </>
   );

@@ -1,10 +1,31 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 
-const EditNote = ({ closemodel }) => {
-    const handleSubmit = (e)=>{
-        e.preventDefault()
+const EditNote = ({ closemodel,note }) => {
+  const [title, setTitle] = useState(note?.title || "");
+  const [content, setContent] = useState(note?.content || ""); 
+  const [category, setCategory] = useState(note?.category || "");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.put(
+        `http://localhost:5000/api/notes/updatenote/${note._id}`,
+        { title, content, category },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert(response.data.message);
+      closemodel(); // Close the modal after successful update
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update the note");
     }
+  };
   return (
     <div
       onClick={closemodel}
@@ -28,16 +49,16 @@ const EditNote = ({ closemodel }) => {
           <input
             type="text"
             placeholder="Title"
-            // value={title}
-            // onChange={(e) => setTitle(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="border p-2 w-full mb-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
 
           <select
             className="border p-2 w-full mb-2 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-            // value={category}
-            // onChange={(e) => setCategory(e.target.value)}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             required
           >
             <option value="work">Work</option>
@@ -48,8 +69,8 @@ const EditNote = ({ closemodel }) => {
 
           <textarea
             placeholder="Write your note here..."
-            // value={content}
-            // onChange={(e) => setContent(e.target.value)}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
             className="border p-2 w-full mb-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
             rows="4"
             required
@@ -59,7 +80,7 @@ const EditNote = ({ closemodel }) => {
             type="submit"
             className="bg-blue-500 text-white p-2 w-full rounded hover:bg-blue-600 transition focus:ring-2 focus:ring-blue-400 focus:outline-none"
           >
-           Update Note
+            Update Note
           </button>
         </form>
       </div>
