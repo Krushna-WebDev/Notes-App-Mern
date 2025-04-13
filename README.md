@@ -80,7 +80,7 @@ npm start
 
 - 👤 Krushna
 - 📫 [krushna.webdev26@gmail.com](krushna.webdev26@gmail.com)
-- 💼 [LinkedIn](linkedin.com/in/krushna-web-dev-2b347b353)
+- 💼 [LinkedIn](www.linkedin.com/in/krushna-web-dev-2b347b353)
 
 ---
 
