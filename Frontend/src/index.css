@@ -1,10 +1,10 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 @font-face {
     font-family: 'merriweather';
     src: url("../public/fonts/Merriweather_24pt-Bold.ttf")
    
   }
-@import "tailwindcss";
-
-@theme{
-    --font-merriweather:merriweather,"sans-serif"
+* {
+  font-family: 'Poppins', sans-serif;
 }

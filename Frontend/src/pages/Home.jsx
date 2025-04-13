@@ -53,11 +53,28 @@ const Home = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    const response = await axios.delete(
-      `http://localhost:5000/api/notes/deletenote/${id}`
-    );
-    alert(response.data.message);
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.delete(
+        `http://localhost:5000/api/notes/deletenote/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      alert(response.data.message);
+
+      // ✅ Remove deleted note from state
+      setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
+    } catch (error) {
+      console.error("Error deleting note:", error);
+      alert("Failed to delete the note.");
+    }
   };
+
   const handleEdit = (note) => {
     setSelectedNote(note); // Set the selected note
     setShowEditNote(true); // Open the edit modal
@@ -88,9 +105,9 @@ const Home = () => {
               </select>
               <button
                 onClick={() => setShowAddNote(true)}
-                className=" flex items-center bg-amber-600 text-white font-bold  shadow-xl px-2 py-2 cursor-pointer rounded-2xl "
+                className=" flex  items-center bg-slate-600 text-white font-bold  shadow-xl px-2 py-2 cursor-pointer rounded-xl "
               >
-                <FaPlus />
+                <FaPlus className="mx-1" />
                 Add Notes
               </button>
             </div>
@@ -102,7 +119,7 @@ const Home = () => {
                 >
                   <div className="flex justify-between">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4">
-                      <h1 className="font-merriweather text-3xl font-bold text-gray-800">
+                      <h1 className="font-merriweather text-2xl font-bold text-gray-800">
                         {note.title}
                       </h1>
                       <span className="bg-blue-100 text-blue-700 text-sm font-semibold px-4 py-1 rounded-full shadow-sm border border-blue-300">
@@ -124,7 +141,9 @@ const Home = () => {
                 </div>
               ))}
             </div>
-            {showAddNote && <AddNote closemodel={closeAddmodel} setNotes={setNotes} />}
+            {showAddNote && (
+              <AddNote closemodel={closeAddmodel} setNotes={setNotes} />
+            )}
             {showEditNote && (
               <EditNote closemodel={closeEditmodel} note={selectedNote} />
             )}
