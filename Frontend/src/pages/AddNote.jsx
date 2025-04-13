@@ -2,13 +2,17 @@ import axios from "axios";
 import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 
-const AddNote = ({ closemodel }) => {
+const AddNote = ({ closemodel,setNotes }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("work");
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!title || !content || !category) {
+      return setError("Please Fill All Fields!");
+    }
     const response = await axios.post(
       "http://localhost:5000/api/notes/addnote",
       { title, content, category },
@@ -17,7 +21,22 @@ const AddNote = ({ closemodel }) => {
       }
     );
     alert(response.data.message);
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("No token found, user not authenticated");
+      return;
+    }
+
+    const res = await axios.get("http://localhost:5000/api/notes/getnote", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setNotes(res.data);
     closemodel();
+    setError("");
   };
 
   return (
@@ -48,7 +67,6 @@ const AddNote = ({ closemodel }) => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="border p-2 w-full mb-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
             />
 
             <select
@@ -69,8 +87,8 @@ const AddNote = ({ closemodel }) => {
               onChange={(e) => setContent(e.target.value)}
               className="border p-2 w-full mb-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               rows="4"
-              required
             />
+            {error && <p className="text-red-500 mb-2">{error}</p>}
 
             <button
               type="submit"

@@ -26,7 +26,7 @@ export const UserProvider = ({ children }) => {
     fetchuser();
   },[]);
   return (
-    <userContext.Provider value={{ user }}>{children}</userContext.Provider>
+    <userContext.Provider value={{ user,setUser }}>{children}</userContext.Provider>
   );
 };
 

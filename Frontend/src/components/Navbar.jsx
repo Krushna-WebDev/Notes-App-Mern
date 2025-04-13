@@ -4,10 +4,11 @@ import { IoSearchSharp } from "react-icons/io5";
 import userContext from "../../Context/authContext";
 
 const Navbar = ({ setSearchQuery }) => {
+  const { user, setUser } = useContext(userContext);
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setUser(null)
   };
-  const { user } = useContext(userContext);
   return (
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-4 md:px-6">

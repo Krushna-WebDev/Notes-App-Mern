@@ -1,9 +1,11 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import userContext from "../../Context/authContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setUser } = useContext(userContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,9 +15,20 @@ const Login = () => {
       email,
       password,
     });
-    localStorage.setItem("token",response.data.token)
+    const token = response.data.token;
+    localStorage.setItem("token", token);
     alert(response.data.message);
-    navigate('/')
+    const userDetail = await axios.post(
+      "http://localhost:5000/api/users/userdetail",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setUser(userDetail.data.user);
+    navigate("/");
   };
   return (
     <>

@@ -66,7 +66,6 @@ const updatenote = async (req, res) => {
   }
 };
 
-
 module.exports = {
   addnote,
   deletenotes,
