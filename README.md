@@ -9,7 +9,7 @@ A full-stack Notes App built using the MERN stack (MongoDB, Express.js, React, N
 - 🔐 User Authentication (JWT-based)
 - 📝 Create, Read, Update, Delete Notes (CRUD)
 - 📂 Note Categories (Work, Personal, etc.)
-- 🌗 Dark Mode
+- 🍗 Dark Mode
 - 🔍 Search & Filter Notes
 - 📱 Mobile Responsive Design
 
@@ -24,7 +24,7 @@ A full-stack Notes App built using the MERN stack (MongoDB, Express.js, React, N
 
 ---
 
-### 🛠 Tech Stack
+### 👷️‍⚖️ Tech Stack
 
 **Frontend**:
 - React.js
@@ -76,14 +76,15 @@ npm start
 
 ---
 
-### 🧑‍💻 Author
+### 🧑‍💼 Author
 
 - 👤 Krushna
-- 📫 [krushna.webdev26@gmail.com](krushna.webdev26@gmail.com)
-- 💼 [LinkedIn](www.linkedin.com/in/krushna-web-dev-2b347b353)
+- 📨 [krushna.webdev26@gmail.com](mailto:krushna.webdev26@gmail.com)
+- 💼 [LinkedIn](https://www.linkedin.com/in/krushna-web-dev-2b347b353)
 
 ---
 
 ### 📄 License
 
 This project is licensed under the MIT License.
+
