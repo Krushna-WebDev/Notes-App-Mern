@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
+import { toast } from "react-toastify";
+import { motion } from "motion/react";
 
-const AddNote = ({ closemodel,setNotes }) => {
+const AddNote = ({ closemodel, setNotes }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("work");
@@ -10,9 +12,19 @@ const AddNote = ({ closemodel,setNotes }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!title || !content || !category) {
-      return setError("Please Fill All Fields!");
+    if (title.trim().length > 15) {
+      setError("Title can't be more than 15 characters.");
+      return setTimeout(() => {
+        setError("");
+      }, 4000);
     }
+    if (!title || !content || !category) {
+      setError("Please Fill All Fields!");
+      return setTimeout(() => {
+        setError("");
+      }, 4000);
+    }
+
     const response = await axios.post(
       "http://localhost:5000/api/notes/addnote",
       { title, content, category },
@@ -20,7 +32,7 @@ const AddNote = ({ closemodel,setNotes }) => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       }
     );
-    alert(response.data.message);
+    toast.success(response.data.message);
 
     const token = localStorage.getItem("token");
 
@@ -41,9 +53,15 @@ const AddNote = ({ closemodel,setNotes }) => {
 
   return (
     <>
-      <div
+      <motion.div
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.2,
+          scale: { type: "spring", visualDuration: 0.3, bounce: 0.3 },
+        }}
         onClick={closemodel}
-        className="fixed bg-black/50  backdrop-blur-md flex items-center justify-center min-h-screen w-full left-0 top-0 z-50"
+        className="fixed   backdrop-blur-md flex items-center justify-center min-h-screen w-full left-0 top-0 z-50"
       >
         {/* Modal Box */}
         <div
@@ -90,15 +108,17 @@ const AddNote = ({ closemodel,setNotes }) => {
             />
             {error && <p className="text-red-500 mb-2">{error}</p>}
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 1 }}
               type="submit"
-              className="bg-blue-500 text-white p-2 w-full rounded hover:bg-blue-600 transition focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="bg-blue-500 cursor-pointer text-white p-2 w-full rounded hover:bg-blue-600 transition focus:ring-2 focus:ring-blue-400 focus:outline-none"
             >
               Add Note
-            </button>
+            </motion.button>
           </form>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

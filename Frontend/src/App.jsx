@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import { Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
 import { UserProvider } from "../Context/authContext";
+import Verifyotp from "./pages/verifyotp";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-otp" element={<Verifyotp />} />
         </Routes>
         <Footer />
       </UserProvider>

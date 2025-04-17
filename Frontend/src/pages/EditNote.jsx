@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
+import { toast } from "react-toastify";
 
-const EditNote = ({ closemodel,note }) => {
+const EditNote = ({ closemodel, note }) => {
   const [title, setTitle] = useState(note?.title || "");
-  const [content, setContent] = useState(note?.content || ""); 
+  const [content, setContent] = useState(note?.content || "");
   const [category, setCategory] = useState(note?.category || "");
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,11 +20,11 @@ const EditNote = ({ closemodel,note }) => {
           },
         }
       );
-      alert(response.data.message);
+      toast.success(response.data.message);
       closemodel(); // Close the modal after successful update
     } catch (error) {
       console.error(error);
-      alert("Failed to update the note");
+      toast.error("Failed to update the note");
     }
   };
   return (

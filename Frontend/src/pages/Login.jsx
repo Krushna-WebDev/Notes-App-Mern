@@ -2,8 +2,11 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import userContext from "../../Context/authContext";
+import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useContext(userContext);
   const [email, setEmail] = useState("");
@@ -11,25 +14,44 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await axios.post("http://localhost:5000/api/users/login", {
-      email,
-      password,
-    });
-    const token = response.data.token;
-    localStorage.setItem("token", token);
-    alert(response.data.message);
-    const userDetail = await axios.post(
-      "http://localhost:5000/api/users/userdetail",
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/users/login",
+        {
+          email,
+          password,
+        }
+      );
+      let token = "";
+      if (response.status === 201) {
+        token = response.data.token;
+        console.log(token);
+        localStorage.setItem("token", token);
+        toast.success("OTP sent successfully");
+        setUser({ email });
+        setEmail("");
+        setPassword("");
+        navigate("/verify-otp");
       }
-    );
-    setUser(userDetail.data.user);
-    navigate("/");
+      const userDetail = await axios.post(
+        "http://localhost:5000/api/users/userdetail",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setUser(userDetail.data.user);
+    } catch (error) {
+      console.error("request failed", error);
+      toast.error("failed to login");
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <>
       <div className="h-screen flex items-center justify-center bg-gray-100">
@@ -62,9 +84,13 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <button className="w-full py-2 cursor-pointer bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
-              Login
-            </button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full py-2 cursor-pointer bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
+            >
+              {loading ? "Loading..." : "Login"}
+            </motion.button>
           </form>
           <p className="text-center text-sm text-gray-600 mt-4">
             Don't have an account?{" "}
