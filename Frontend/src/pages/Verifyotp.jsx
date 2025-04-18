@@ -20,7 +20,7 @@ const Verifyotp = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/verifyotp",
+        "https://notes-app-mern-uqw9.onrender.com/api/users/verifyotp",
         { email, otp }
       );
       if (response.status === 201) {

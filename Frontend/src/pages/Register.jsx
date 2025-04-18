@@ -21,7 +21,7 @@ const Register = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/register",
+        "https://notes-app-mern-uqw9.onrender.com/api/users/register",
         { name, email, password }
       );
 

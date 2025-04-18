@@ -17,7 +17,7 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/login",
+        "https://notes-app-mern-uqw9.onrender.com/api/users/login",
         {
           email,
           password,
@@ -35,7 +35,7 @@ const Login = () => {
         navigate("/verify-otp");
       }
       const userDetail = await axios.post(
-        "http://localhost:5000/api/users/userdetail",
+        "https://notes-app-mern-uqw9.onrender.com/api/users/userdetail",
         {},
         {
           headers: {

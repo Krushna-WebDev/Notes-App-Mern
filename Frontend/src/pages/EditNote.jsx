@@ -14,7 +14,7 @@ const EditNote = ({ closemodel, note,updateNote }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:5000/api/notes/updatenote/${note._id}`,
+        `https://notes-app-mern-uqw9.onrender.com/api/notes/updatenote/${note._id}`,
         { title, content, category },
         {
           headers: {
