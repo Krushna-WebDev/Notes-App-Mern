@@ -1,5 +1,5 @@
-import axios from "axios";
 import { createContext, useEffect, useState } from "react";
+import api from "../src/api";
 
 const userContext = createContext();
 
@@ -12,16 +12,12 @@ export const UserProvider = ({ children }) => {
         console.error("No token found, user not authenticated");
         return;
       }
-      const response = await axios.post(
-        "http://localhost:5000/api/users/userdetail",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setUser(response.data.user);
+      try {
+        const response = await api.post("/users/userdetail");
+        setUser(response.data.user);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
     };
     fetchuser();
   },[]);

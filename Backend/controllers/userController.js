@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const generateotp = require("../utils/generateotp");
 const { sendEmail } = require("../utils/mailer");
+require("dotenv").config();
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -27,7 +28,7 @@ const login = async (req, res) => {
 
     await sendEmail(email, otp);
 
-    const token = jwt.sign({ userId: user._id }, "shhhh");
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
     res.status(201).json({
       message: "Login successful!",
       token,
@@ -66,7 +67,7 @@ const register = async (req, res) => {
 
     await sendEmail(email, otp);
 
-    const token = jwt.sign({ userId: createduser._id }, "shhhh");
+    const token = jwt.sign({ userId: createduser._id }, process.env.JWT_SECRET);
 
     return res
       .status(201)

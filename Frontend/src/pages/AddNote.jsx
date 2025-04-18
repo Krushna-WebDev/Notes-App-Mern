@@ -1,8 +1,8 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-toastify";
 import { motion } from "motion/react";
+import api from "../api";
 
 const AddNote = ({ closemodel, setNotes }) => {
   const [title, setTitle] = useState("");
@@ -25,30 +25,21 @@ const AddNote = ({ closemodel, setNotes }) => {
       }, 4000);
     }
 
-    const response = await axios.post(
-      "http://localhost:5000/api/notes/addnote",
-      { title, content, category },
-      {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      }
+    const response = await api.post(
+      "/notes/addnote",
+      { title, content, category }
     );
+    
     toast.success(response.data.message);
 
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      console.error("No token found, user not authenticated");
-      return;
+    try {
+      const res = await api.get("/notes/getnote");
+      setNotes(res.data);
+      closemodel();
+      setError("");
+    } catch (error) {
+      console.error("Error fetching updated notes:", error);
     }
-
-    const res = await axios.get("http://localhost:5000/api/notes/getnote", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setNotes(res.data);
-    closemodel();
-    setError("");
   };
 
   return (

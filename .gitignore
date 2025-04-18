@@ -2,6 +2,8 @@
 Backend/node_modules/
 Frontend/node_modules/
 
+node_modules
+
 # Build
 Frontend/build/
 

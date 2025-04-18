@@ -1,7 +1,6 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
-mongoose.connect(
-  "mongodb+srv://krushnawebdev26:KrushnaWebdev16@krushna.fbypd.mongodb.net/NotesApp?retryWrites=true&w=majority&appName=Krushna"
-);
+mongoose.connect(process.env.MONGO_URI);
 
 const noteSchema = mongoose.Schema({
   title: String,
@@ -10,7 +9,7 @@ const noteSchema = mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   userId: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: "User",  // Reference to User model
+    ref: "User",  
     required: true 
   }
 });

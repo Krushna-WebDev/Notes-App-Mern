@@ -2,13 +2,13 @@ import React, { useEffect, useState, useContext } from "react";
 import { FaPlus } from "react-icons/fa";
 import { MdDelete, MdEdit } from "react-icons/md";
 import AddNote from "./AddNote";
-import axios from "axios";
 import Navbar from "../components/Navbar";
 import userContext from "../../Context/authContext";
 import EditNote from "./EditNote";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+import api from "../api";
 
 const Home = () => {
   const { user } = useContext(userContext);
@@ -41,12 +41,7 @@ const Home = () => {
           return;
         }
 
-        const res = await axios.get("http://localhost:5000/api/notes/getnote", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
+        const res = await api.get("/notes/getnote");
         setNotes(res.data);
       } catch (error) {
         console.error(error);
@@ -59,17 +54,7 @@ const Home = () => {
 
   const handleDelete = async (id) => {
     try {
-      const token = localStorage.getItem("token");
-
-      const response = await axios.delete(
-        `http://localhost:5000/api/notes/deletenote/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const response = await api.delete(`/notes/deletenote/${id}`);
       toast.success(response.data.message);
       setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
     } catch (error) {
@@ -175,7 +160,17 @@ const Home = () => {
             <AddNote closemodel={closeAddmodel} setNotes={setNotes} />
           )}
           {showEditNote && (
-            <EditNote closemodel={closeEditmodel} note={selectedNote} />
+            <EditNote
+              closemodel={closeEditmodel}
+              note={selectedNote}
+              updateNote={(updatedNote) => {
+                setNotes((prevNotes) =>
+                  prevNotes.map((note) =>
+                    note._id === updatedNote._id ? updatedNote : note
+                  )
+                );
+              }}
+            />
           )}
         </div>
       ) : (
