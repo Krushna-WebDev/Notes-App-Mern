@@ -5,7 +5,7 @@ import Register from "./pages/Register";
 import { Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
 import { UserProvider } from "../Context/authContext";
-import Verifyotp from "./pages/verifyotp";
+import Verifyotp from "./pages/Verifyotp";
 
 const App = () => {
   return (
